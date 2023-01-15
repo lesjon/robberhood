@@ -1,12 +1,14 @@
 import sys
 import json
 import logging
+import pathlib
 
 import flask
 
 from classifier import classifier
 
-BUFFER = "./received"
+BUFFER = "received/"
+pathlib.Path(BUFFER).mkdir(parents=True, exist_ok=True)
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -36,7 +38,7 @@ def statements():
         case "POST":
             f = flask.request.files['csv']
             logger.debug(f"{f=}")
-            f.save(BUFFER + "/" + f.filename)
+            f.save(BUFFER + f.filename)
             return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
         case "GET":
             return ["not yet implemented"]
